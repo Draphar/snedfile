@@ -1,0 +1,30 @@
+[package]
+name = "snedfile"
+version = "0.1.0"
+authors = ["Draphar <draphar-code@protonmail.com>"]
+edition = "2018"
+repository = "https://github.com/Draphar/snedfile"
+license = "MIT"
+readme = "README.md"
+documentation = "https://docs.rs/snedfile"
+description = "Cross-platform sendfile() abstractions"
+categories = ["api-bindings", "network-programming"]
+keywords = ["sendfile", "cross-platform", "syscall", "wrapper"]
+
+[badges]
+travis-ci = { repository = "Draphar/snedfile", branch = "master" }
+appveyor = { repository = "Draphar/snedfile", branch = "master", service = "github" }
+
+[dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+tcp-test = "0.1"
+tempfile = "3.1"
+
+[features]
+default = ["fallback-bufreader", "ios-sendfile"]
+fallback-bufreader = []
+fallback-buf = []
+ios-sendfile = []
+large-files = []

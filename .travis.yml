@@ -1,0 +1,68 @@
+language: rust
+
+dist: trusty
+
+matrix:
+  include:
+    - os: linux
+      env:
+        - target: x86_64-unknown-linux-gnu
+    - os: linux
+      env:
+        - target: i686-unknown-linux-gnu
+      addons:
+        apt:
+          packages:
+            - gcc-multilib
+    - os: osx
+      env:
+        - target: x86_64-apple-darwin
+    - os: osx
+      env:
+        - target: i686-apple-darwin
+
+install:
+  - rustup component add rustfmt
+  - rustup component add clippy
+  - rustup toolchain install "stable-$target"
+  - rustup toolchain install "beta-$target"
+  - rustup toolchain install "nightly-$target"
+  - function test() {
+      echo "Testing stable";
+      rustup run "stable-$target" cargo test "$@";
+      echo "Testing stable --release";
+      rustup run "stable-$target" cargo test --release "$@";
+
+      echo "Testing beta";
+      rustup run "beta-$target" cargo test "$@";
+      echo "Testing beta --release";
+      rustup run "beta-$target" cargo test --release "$@";
+
+      echo "Testing nightly";
+      rustup run "nightly-$target" cargo test "$@";
+      echo "Testing nightly --release";
+      rustup run "nightly-$target" cargo test --release "$@";
+    }
+
+before_script:
+  - rustup run "stable-$target" cargo build --all-targets
+  - rustup run "stable-$target" cargo build --all-targets --release
+  - rustup run "beta-$target" cargo build --all-targets
+  - rustup run "beta-$target" cargo build --all-targets --release
+  - rustup run "nightly-$target" cargo build --all-targets
+  - rustup run "nightly-$target" cargo build --all-targets --release
+
+script:
+  - cargo fmt -- --check
+  - cargo clippy
+  - test
+  - test --features large-files
+  - test --no-default-features
+  - test --no-default-features --features large-files
+  - test --no-default-features --features fallback-buf
+  - test --no-default-features --features fallback-buf,large-files
+  - test --no-default-features --features fallback-bufreader
+  - test --no-default-features --features fallback-bufreader,large-files
+
+notifications:
+  email: false

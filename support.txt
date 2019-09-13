@@ -1,0 +1,18 @@
+# Supported targets
+
+- target_os = "linux"
+http://man7.org/linux/man-pages/man2/sendfile.2.html
+
+- target_os = "android"
+https://developer.android.com/reference/android/system/Os.html#sendfile(java.io.FileDescriptor,%20java.io.FileDescriptor,%20android.system.Int64Ref,%20long)
+(Same as Linux)
+
+- targos_os = "macos", target_os = "ios"
+https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/sendfile.2.html
+(May be broken on iOS https://blog.phusion.nl/2015/06/04/the-brokenness-of-the-sendfile-system-call/)
+
+- target_os = "freebsd"
+https://www.freebsd.org/cgi/man.cgi?query=sendfile
+
+- target_os = "dragonfly"
+https://www.dragonflybsd.org/cgi/web-man?command=sendfile&section=2
